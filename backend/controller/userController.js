@@ -56,3 +56,31 @@ export const deleteUser = async(req,res)=>{
         })
     }
 }
+
+export const updateUser = async(req,res)=>{
+    try {
+        const {id} = req.params
+        const {name,email,phone} = req.body
+        const updateItem = await userSchema.findByIdAndUpdate(
+            id,
+            {name,email,phone},
+            {new:true}
+        )
+        if(!updateItem){
+            return res.status(400).json({
+                success:false,
+                message:"user not found"
+            })
+        }
+        return res.status(201).json({
+            success:true,
+            message:"user updated successfully",
+            data:updateUser
+        })
+    } catch (error) {
+           return res.status(401).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
